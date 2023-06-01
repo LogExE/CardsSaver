@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CardDisplayActivity">
+    tools:context=".presentation.fragments.CardDisplayFragment">
 
     <TextView
         android:id="@+id/cardTextView"

@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import com.example.cardssaver.databinding.FragmentCardInputBinding
 import com.example.cardssaver.domain.Card
 import com.google.zxing.BarcodeFormat
@@ -108,8 +109,10 @@ class CardInputFragment : Fragment() {
 
         //сканирование
         val barcodeLauncher = registerForActivityResult(ScanContract()) { res ->
-            binding.cardValueEditText.setText(res.contents)
-            binding.codeSpinner.setSelection(spinnerItems.indexOf(BarcodeFormat.valueOf(res.formatName)))
+            if (res.contents != null) {
+                binding.cardValueEditText.setText(res.contents)
+                binding.codeSpinner.setSelection(spinnerItems.indexOf(BarcodeFormat.valueOf(res.formatName)))
+            }
         }
         binding.scanButton.setOnClickListener {
             barcodeLauncher.launch(scanOptions)
@@ -142,24 +145,6 @@ class CardInputFragment : Fragment() {
                     putSerializable(ARG_CARD_TYPE, card.type)
                     putString(ARG_CARD_INFO, card.info)
                     putString(ARG_CARD_IMAGE, card.image)
-                }
-            }
-
-        @JvmStatic
-        fun newInstance(
-            name: String? = null,
-            value: String? = null,
-            type: String? = null,
-            info: String = "",
-            image: String = ""
-        ) =
-            CardInputFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_CARD_NAME, name)
-                    putString(ARG_CARD_VALUE, value)
-                    putSerializable(ARG_CARD_TYPE, type?.let { BarcodeFormat.valueOf(it) })
-                    putString(ARG_CARD_INFO, info)
-                    putString(ARG_CARD_IMAGE, image)
                 }
             }
     }
