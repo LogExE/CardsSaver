@@ -10,7 +10,8 @@ import com.example.cardssaver.R
 import com.example.cardssaver.databinding.ItemCardBinding
 import com.example.cardssaver.domain.Card
 
-class CardsAdapter(private val onClickListener: OnClickListener) : RecyclerView.Adapter<CardsAdapter.CardsViewHolder>() {
+class CardsAdapter(private val onClickListener: OnClickListener) :
+    RecyclerView.Adapter<CardsAdapter.CardsViewHolder>() {
 
     var cards: List<Card> = listOf()
 
@@ -28,7 +29,7 @@ class CardsAdapter(private val onClickListener: OnClickListener) : RecyclerView.
 
     override fun onBindViewHolder(holder: CardsViewHolder, position: Int) {
         val card: Card = cards[position]
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             onClickListener.clickListener(card)
         }
         with(holder.binding) {
@@ -39,8 +40,7 @@ class CardsAdapter(private val onClickListener: OnClickListener) : RecyclerView.
                     .placeholder(R.drawable.ic_credcard)
                     .error(R.drawable.ic_credcard)
                     .into(photoImageView)
-            }
-            else {
+            } else {
                 photoImageView.setImageResource(R.drawable.ic_credcard)
             }
         }

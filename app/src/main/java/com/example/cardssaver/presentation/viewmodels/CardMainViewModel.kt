@@ -15,15 +15,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CardMainViewModel @Inject constructor(private val db: CardSaverDatabase)
-    : ViewModel() {
+class CardMainViewModel @Inject constructor(private val db: CardSaverDatabase) : ViewModel() {
     val allCards = db.cardDao().getAll().asLiveData()
 
-    fun insertCard(name: String,
-                   value: String,
-                   type: BarcodeFormat,
-                   image: String = "",
-                   info: String = ""
+    fun insertCard(
+        name: String,
+        value: String,
+        type: BarcodeFormat,
+        image: String = "",
+        info: String = ""
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val card = CardEntity(
@@ -47,6 +47,12 @@ class CardMainViewModel @Inject constructor(private val db: CardSaverDatabase)
     fun deleteCard(card: Card) {
         viewModelScope.launch(Dispatchers.IO) {
             db.cardDao().deleteCard(card.toLocal())
+        }
+    }
+
+    fun purge() {
+        viewModelScope.launch(Dispatchers.IO) {
+            db.cardDao().deleteAll()
         }
     }
 }

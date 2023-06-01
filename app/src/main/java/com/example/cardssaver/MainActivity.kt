@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.cardssaver.data.local.CardSaverDatabase
 import com.example.cardssaver.databinding.ActivityMainBinding
 import com.example.cardssaver.domain.toDomain
 import com.example.cardssaver.presentation.adapters.CardsAdapter
