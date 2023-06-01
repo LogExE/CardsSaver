@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val barcodeLauncher = registerForActivityResult(ScanContract()) { res ->
-            if (res.contents != null) startActivity(
+            startActivity(
                 Intent(
                     this,
                     CardCreatorActivity::class.java

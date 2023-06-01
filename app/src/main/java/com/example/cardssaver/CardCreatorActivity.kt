@@ -24,8 +24,8 @@ class CardCreatorActivity : AppCompatActivity() {
             setReorderingAllowed(true)
             add(
                 binding.cardInputFragView.id, CardInputFragment.newInstance(
-                    intent.getStringExtra("cardValue")!!,
-                    BarcodeFormat.valueOf(intent.getStringExtra("cardFormat")!!),
+                    value = intent.getStringExtra("cardValue"),
+                    type = intent.getStringExtra("cardFormat")
                 )
             )
         }

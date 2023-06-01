@@ -37,7 +37,7 @@ class CardInputFragment : Fragment() {
         arguments?.let {
             cardName = it.getString(ARG_CARD_NAME)
             cardValue = it.getString(ARG_CARD_VALUE)
-            cardType = it.getSerializable(ARG_CARD_TYPE) as BarcodeFormat
+            cardType = it.getSerializable(ARG_CARD_TYPE) as? BarcodeFormat
             cardInfo = it.getString(ARG_CARD_INFO)
             cardImage = it.getString(ARG_CARD_IMAGE)
         }
@@ -108,12 +108,22 @@ class CardInputFragment : Fragment() {
                     putString(ARG_CARD_IMAGE, card.image)
                 }
             }
+
         @JvmStatic
-        fun newInstance(value: String, type: BarcodeFormat) =
+        fun newInstance(
+            name: String? = null,
+            value: String? = null,
+            type: String? = null,
+            info: String = "",
+            image: String = ""
+        ) =
             CardInputFragment().apply {
                 arguments = Bundle().apply {
+                    putString(ARG_CARD_NAME, name)
                     putString(ARG_CARD_VALUE, value)
-                    putSerializable(ARG_CARD_TYPE, type)
+                    putSerializable(ARG_CARD_TYPE, type?.let { BarcodeFormat.valueOf(it) })
+                    putString(ARG_CARD_INFO, info)
+                    putString(ARG_CARD_IMAGE, image)
                 }
             }
     }
