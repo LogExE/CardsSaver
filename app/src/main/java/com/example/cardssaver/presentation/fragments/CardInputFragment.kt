@@ -14,7 +14,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResult
 import com.example.cardssaver.databinding.FragmentCardInputBinding
 import com.example.cardssaver.domain.Card
-import com.example.cardssaver.presentation.adapters.OnClickListener
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder

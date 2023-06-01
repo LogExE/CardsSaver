@@ -3,10 +3,7 @@ package com.example.cardssaver
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.commit
-import androidx.lifecycle.ViewModelProvider
-import com.example.cardssaver.databinding.ActivityCardCreatorBinding
 import com.example.cardssaver.databinding.ActivityCardEditorBinding
 import com.example.cardssaver.domain.Card
 import com.example.cardssaver.presentation.fragments.CardInputFragment

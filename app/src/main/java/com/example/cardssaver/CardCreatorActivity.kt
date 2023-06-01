@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.commit
-import androidx.lifecycle.ViewModelProvider
 import com.example.cardssaver.databinding.ActivityCardCreatorBinding
 import com.example.cardssaver.presentation.fragments.CardInputFragment
 import com.example.cardssaver.presentation.viewmodels.CardMainViewModel
