@@ -22,6 +22,7 @@ class CardCreatorActivity : AppCompatActivity() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             add(
+                //передаем в фрагмент возможные значения полей
                 binding.cardInputFragView.id, CardInputFragment.newInstance(
                     value = intent.getStringExtra("cardValue"),
                     type = intent.getStringExtra("cardFormat")
@@ -30,6 +31,7 @@ class CardCreatorActivity : AppCompatActivity() {
         }
 
         val cardViewModel: CardMainViewModel by viewModels()
+        //при нажатии на proceed
         supportFragmentManager.setFragmentResultListener("cardKey", this) { _, bundle ->
             cardViewModel.insertCard(
                 bundle.getString("cardName")!!,

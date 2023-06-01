@@ -25,25 +25,30 @@ class MainActivity : AppCompatActivity() {
         .setBeepEnabled(false)
         .setOrientationLocked(false)
 
+    //при клике на карту она отображается
+    private val adapterOnClick = OnClickListener {
+        startActivity(Intent(this, CardDisplayActivity::class.java).apply {
+            this.putExtra("card", it)
+        })
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        cardsListAdapter = CardsAdapter(OnClickListener {
-            startActivity(Intent(this, CardDisplayActivity::class.java).apply {
-                this.putExtra("card", it)
-            })
-        })
+        cardsListAdapter = CardsAdapter(adapterOnClick)
         binding.cardRecycleView.layoutManager = LinearLayoutManager(this)
         binding.cardRecycleView.adapter = cardsListAdapter
 
         val cardViewModel: CardMainViewModel by viewModels()
+        //поддержка состояния списка карт
         cardViewModel.allCards.observe(this) {
             cardsListAdapter.cards = it.map { cardEntity -> cardEntity.toDomain() }
             cardsListAdapter.notifyDataSetChanged()
         }
 
+        //сканирование
         val barcodeLauncher = registerForActivityResult(ScanContract()) { res ->
             startActivity(
                 Intent(

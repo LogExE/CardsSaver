@@ -41,10 +41,12 @@ class CardEditorActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
 
+        //спрашиваем подтверждение при удалении
         binding.delCardButton.setOnClickListener {
             alertDialog.create().show()
         }
 
+        //proceed
         supportFragmentManager.setFragmentResultListener("cardKey", this) { _, bundle ->
             cardViewModel.updateCard(
                 card.copy(
