@@ -65,6 +65,8 @@ class CardInputFragment : Fragment() {
         if (cardType != null)
             binding.codeSpinner.setSelection(spinnerItems.indexOf(cardType))
         var retCardImage = cardImage ?: ""
+        if (cardInfo != null)
+            binding.cardInfoText.setText(cardInfo)
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
