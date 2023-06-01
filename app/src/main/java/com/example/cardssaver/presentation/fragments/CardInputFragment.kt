@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.setFragmentResult
@@ -15,6 +16,8 @@ import com.example.cardssaver.databinding.FragmentCardInputBinding
 import com.example.cardssaver.domain.Card
 import com.example.cardssaver.presentation.adapters.OnClickListener
 import com.google.zxing.BarcodeFormat
+import com.google.zxing.WriterException
+import com.journeyapps.barcodescanner.BarcodeEncoder
 
 private const val ARG_CARD_NAME = "card_name"
 private const val ARG_CARD_VALUE = "card_value"
@@ -73,7 +76,7 @@ class CardInputFragment : Fragment() {
                 if (uri != null) {
                     requireActivity().contentResolver.takePersistableUriPermission(
                         uri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION
                     )
                     retCardImage = uri.toString()
                 }
@@ -83,13 +86,29 @@ class CardInputFragment : Fragment() {
         }
 
         binding.proceedButton.setOnClickListener {
+            if (!checkInputOk()) {
+                Toast.makeText(requireContext(), "Wrong card value format!", Toast.LENGTH_LONG)
+                    .show()
+                return@setOnClickListener
+            }
             val bundle = Bundle()
             bundle.putString("cardName", binding.cardNameEditText.text.toString())
             bundle.putString("cardValue", binding.cardValueEditText.text.toString())
             bundle.putString("cardType", binding.codeSpinner.selectedItem.toString())
             bundle.putString("cardInfo", binding.cardInfoText.text.toString())
-            bundle.putString("cardImage", binding.imagePickButton.text.toString())
+            bundle.putString("cardImage", retCardImage)
             setFragmentResult("cardKey", bundle)
+        }
+    }
+
+    private fun checkInputOk(): Boolean {
+        val value = binding.cardValueEditText.text.toString()
+        val type = BarcodeFormat.valueOf(binding.codeSpinner.selectedItem.toString())
+        return try {
+            BarcodeEncoder().encodeBitmap(value, type, 1024, 1024)
+            true
+        } catch (e: WriterException) {
+            false
         }
     }
 
