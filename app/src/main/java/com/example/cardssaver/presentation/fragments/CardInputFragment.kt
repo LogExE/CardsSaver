@@ -17,6 +17,8 @@ import com.example.cardssaver.domain.Card
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 
 private const val ARG_CARD_NAME = "card_name"
 private const val ARG_CARD_VALUE = "card_value"
@@ -33,6 +35,11 @@ class CardInputFragment : Fragment() {
 
     private var _binding: FragmentCardInputBinding? = null
     private val binding get() = _binding!!
+
+    private val scanOptions = ScanOptions()
+        .setPrompt("Scan the card")
+        .setBeepEnabled(false)
+        .setOrientationLocked(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +104,15 @@ class CardInputFragment : Fragment() {
             bundle.putString("cardInfo", binding.cardInfoText.text.toString())
             bundle.putString("cardImage", retCardImage)
             setFragmentResult("cardKey", bundle)
+        }
+
+        //сканирование
+        val barcodeLauncher = registerForActivityResult(ScanContract()) { res ->
+            binding.cardValueEditText.setText(res.contents)
+            binding.codeSpinner.setSelection(spinnerItems.indexOf(BarcodeFormat.valueOf(res.formatName)))
+        }
+        binding.scanButton.setOnClickListener {
+            barcodeLauncher.launch(scanOptions)
         }
     }
 

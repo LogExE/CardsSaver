@@ -18,24 +18,25 @@ class CardDisplayActivity : AppCompatActivity() {
 
         val card = intent.getSerializableExtra("card")!! as Card
 
+        //название
         binding.cardTextView.text = card.name
 
+        //генерация картинки кода
         val barcodeEncoder = BarcodeEncoder()
         val bitmap = barcodeEncoder.encodeBitmap(card.value, card.type, 1024, 1024)
         binding.codeImageView.setImageBitmap(bitmap)
-
+        //значение кода
         binding.valueTextView.text = card.value
 
-        //если указана информация
+        //если указана информация, отображаем ее
         if (card.info.isNotBlank()) {
             binding.infoLayout.visibility = View.VISIBLE
             binding.infoTextView.text = card.info
-        }
-        else binding.infoLayout.visibility = View.INVISIBLE
+        } else binding.infoLayout.visibility = View.INVISIBLE
 
         //пользователь может изменить карту при нажатии на Edit
         binding.editCardButton.setOnClickListener {
-            startActivity(Intent(this, CardEditorActivity::class.java).apply{
+            startActivity(Intent(this, CardEditorActivity::class.java).apply {
                 this.putExtra("card", card)
             })
             finish()

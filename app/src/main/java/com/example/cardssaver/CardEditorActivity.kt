@@ -16,6 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class CardEditorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCardEditorBinding
 
+    private val cardViewModel: CardMainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCardEditorBinding.inflate(layoutInflater)
@@ -28,7 +30,6 @@ class CardEditorActivity : AppCompatActivity() {
             add(binding.cardInputFragView.id, CardInputFragment.newInstance(card))
         }
 
-        val cardViewModel: CardMainViewModel by viewModels()
         val alertDialog = MaterialAlertDialogBuilder(this)
             .setMessage("You sure?")
             .setTitle("Confirmation")

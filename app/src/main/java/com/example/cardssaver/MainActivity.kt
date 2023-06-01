@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cardssaver.databinding.ActivityMainBinding
 import com.example.cardssaver.domain.toDomain
-import com.example.cardssaver.presentation.adapters.CardsAdapter
-import com.example.cardssaver.presentation.adapters.OnClickListener
+import com.example.cardssaver.presentation.fragments.adapters.CardsAdapter
+import com.example.cardssaver.presentation.fragments.adapters.OnClickListener
 import com.example.cardssaver.presentation.viewmodels.CardMainViewModel
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
@@ -20,12 +20,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var cardsListAdapter: CardsAdapter
 
-    private val scanOptions = ScanOptions()
-        .setPrompt("Scan the card")
-        .setBeepEnabled(false)
-        .setOrientationLocked(false)
-
-    //при клике на карту она отображается
+    private val cardViewModel: CardMainViewModel by viewModels()
+    
+    //при клике на карту открывается CardDisplay
     private val adapterOnClick = OnClickListener {
         startActivity(Intent(this, CardDisplayActivity::class.java).apply {
             this.putExtra("card", it)
@@ -37,30 +34,25 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //настройка списка карт
         cardsListAdapter = CardsAdapter(adapterOnClick)
         binding.cardRecycleView.layoutManager = LinearLayoutManager(this)
         binding.cardRecycleView.adapter = cardsListAdapter
 
-        val cardViewModel: CardMainViewModel by viewModels()
         //поддержка состояния списка карт
         cardViewModel.allCards.observe(this) {
             cardsListAdapter.cards = it.map { cardEntity -> cardEntity.toDomain() }
             cardsListAdapter.notifyDataSetChanged()
         }
 
-        //сканирование
-        val barcodeLauncher = registerForActivityResult(ScanContract()) { res ->
+        //поведение кнопки Add a new card
+        binding.addcardbutton.setOnClickListener {
             startActivity(
                 Intent(
                     this,
                     CardCreatorActivity::class.java
-                ).apply {
-                    this.putExtra("cardValue", res.contents)
-                    this.putExtra("cardFormat", res.formatName)
-                })
-        }
-        binding.addcardbutton.setOnClickListener {
-            barcodeLauncher.launch(scanOptions)
+                )
+            )
         }
     }
 }

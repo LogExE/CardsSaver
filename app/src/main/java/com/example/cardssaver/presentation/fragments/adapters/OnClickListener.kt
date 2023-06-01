@@ -1,4 +1,4 @@
-package com.example.cardssaver.presentation.adapters
+package com.example.cardssaver.presentation.fragments.adapters
 
 import com.example.cardssaver.domain.Card
 
